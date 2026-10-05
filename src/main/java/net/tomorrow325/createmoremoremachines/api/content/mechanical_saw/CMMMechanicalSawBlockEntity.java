@@ -33,8 +33,9 @@ import net.yxiao233.createmoremachines.api.registry.CMMTier;
  *
  * <p>Both multiples (the speed division in the first bullet and the batch size in the second)
  * are resolved through {@code CMMMConfig} instead of being read straight from the tier: its
- * per-tier addon entries default to {@code -1} = follow the tier's CMM processing multiple
- * (the un-overridden behaviour), while an explicit value of 2 or above overrides it.
+ * per-tier addon entries default to the processing multiple of the same tier's CMM deployer,
+ * an explicit value of 2 or above overrides it, and an explicit {@code -1} follows the tier's
+ * CMM processing multiple.
  *
  * <p>The vanilla apply threshold is {@code remainingTime < 5}; after the division a cycle can
  * start below that threshold and fire {@code applyRecipe} on the very next tick, which would
@@ -105,7 +106,7 @@ public class CMMMechanicalSawBlockEntity extends SawBlockEntity {
         super.start(inserted);
         if (untouchedBySuper || !canProcess() || inventory.isEmpty())
             return;
-        // Resolved speed multiple: CMMMConfig's default (-1) follows the tier's CMM processing
+        // Resolved speed multiple: CMMMConfig's default is the tier's CMM deployer processing
         // multiple; values <= 1 keep the vanilla speed and skip the division below.
         int multiple = CMMMConfig.mechanicalSawSpeedMultiple(tier);
         if (multiple <= 1)
@@ -121,8 +122,8 @@ public class CMMMechanicalSawBlockEntity extends SawBlockEntity {
 
     /**
      * Slot 0 accepts up to {@code min(processingMultiple, MAX_BATCH)} items of one kind, where
-     * the multiple comes from {@code CMMMConfig}'s resolver (default {@code -1} = the tier's
-     * CMM processing multiple); the {@code max(…, 1)} keeps unconfigured or misconfigured
+     * the multiple comes from {@code CMMMConfig}'s resolver (default = the tier's CMM deployer
+     * processing multiple); the {@code max(…, 1)} keeps unconfigured or misconfigured
      * custom tiers - and an explicit addon value below 2 - at the vanilla saw baseline of one
      * item instead of accepting nothing; slots 1..31 keep the vanilla saw limit
      * of 1 per slot ({@code withSlotLimit(!bulkCutting)} with the default {@code bulkCutting =

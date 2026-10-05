@@ -13,20 +13,39 @@ import net.yxiao233.createmoremachines.api.registry.CMMTier;
  * and config edits take effect on restart.
  *
  * <p>The four resolvers below are the single read path for the machine code. Resolution rule:
- * a configured value below 0 (the default {@code -1}, or any unexpected negative) means "follow
- * the tier's CMM processing multiple", which reproduces the previous un-overridden behaviour;
- * anything else is returned as configured. No clamping happens here on purpose - the use sites
+ * a configured value below 0 (an explicit {@code -1}, or any unexpected negative) means "follow
+ * the tier's CMM processing multiple"; anything else is returned as configured. No clamping
+ * happens here on purpose - the use sites
  * keep their existing guards (the 64 batch cap, the cycle-duration floors, the vanilla-speed
  * early-outs and the {@code max(..., 1)} protections), so an explicit value behaves exactly
  * like the same CMM multiple would.
  */
 public class CMMMConfig {
     private static final ModConfigSpec.Builder BUILDER;
-    public static final CMMMTierConfig BRASS = CMMMTierConfig.create("brass");
-    public static final CMMMTierConfig NETHERITE = CMMMTierConfig.create("netherite");
-    public static final CMMMTierConfig END = CMMMTierConfig.create("end");
-    public static final CMMMTierConfig BEYOND = CMMMTierConfig.create("beyond");
-    public static final CMMMTierConfig CREATIVE = CMMMTierConfig.create("creative");
+    // Defaults mirror the CMM deployer of the same tier: CMMConfig ships deployer processing
+    // multiples of 4 (brass), 8 (netherite), 16 (end), 32 (beyond) and 64 (creative), so the
+    // addon machines start out matching their same-tier deployer instead of the usually larger
+    // tier processing multiple. An explicit -1 in the config file opts back into that multiple.
+    public static final CMMMTierConfig BRASS = CMMMTierConfig.create("brass",
+            4,4,
+            4,4
+    );
+    public static final CMMMTierConfig NETHERITE = CMMMTierConfig.create("netherite",
+            8,8,
+            8,8
+    );
+    public static final CMMMTierConfig END = CMMMTierConfig.create("end",
+            16,16,
+            16,16
+    );
+    public static final CMMMTierConfig BEYOND = CMMMTierConfig.create("beyond",
+            32,32,
+            32,32
+    );
+    public static final CMMMTierConfig CREATIVE = CMMMTierConfig.create("creative",
+            64,64,
+            64,64
+    );
     protected static final ModConfigSpec SPEC;
     static {
         BUILDER = new ModConfigSpec.Builder();
@@ -69,6 +88,33 @@ public class CMMMConfig {
             case "creative" -> CREATIVE;
             default -> null;
         };
+    }
+
+    /**
+     * Runtime and tooltip cap of the parallel batch, matching CMM's own deployer clamp
+     * ({@code CMMBeltDeployerCallbacks} uses {@code Math.min(multiple, 64)}).
+     */
+    public static final int MAX_PROCESSING_MULTIPLE = 64;
+
+    /**
+     * Translation key of the parallel-count tooltip line. Deliberately an own key instead of
+     * CMM's {@code tooltip.createmoremachines.processing_multiple} so the addon controls its
+     * wording; the shipped strings copy CMM's so both mods' tooltips stay visually identical.
+     */
+    public static final String TOOLTIP_PROCESSING_MULTIPLE = "tooltip.createmoremoremachines.processing_multiple";
+
+    /**
+     * Effective parallel count shown in the machine tooltips: the resolved multiple floored at
+     * 1 (0/1 mean "parallel disabled", never "zero") and capped at {@link #MAX_PROCESSING_MULTIPLE}
+     * - the exact clamp the saw's slot-0 capacity applies at runtime. The tooltip must go through
+     * the same resolvers as the machines: {@code CMMTierTooltip.Type.PROCESSING_MULTIPLE} renders
+     * {@code tier.getProcessingMultiple()} only and never sees this addon's per-machine config
+     * override, which is the tooltip/config mismatch this fixes. The wheel's slot-0 capacity
+     * keeps the vanilla whole-stack baseline for multiples &le; 1; the floored display of 1 there
+     * matches the config comment ("0/1 disables the parallel feature").
+     */
+    public static int clampProcessingMultiple(int resolvedMultiple) {
+        return Math.min(Math.max(resolvedMultiple, 1), MAX_PROCESSING_MULTIPLE);
     }
 
     public static int crushingWheelProcessingMultiple(CMMTier tier) {

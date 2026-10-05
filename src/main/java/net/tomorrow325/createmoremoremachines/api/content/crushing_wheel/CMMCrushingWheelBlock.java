@@ -19,8 +19,8 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
+import net.tomorrow325.createmoremoremachines.CMMMConfig;
 import net.tomorrow325.createmoremoremachines.common.registry.CMMMRegistryEntry;
-import net.yxiao233.createmoremachines.api.CMMTierTooltip;
 import net.yxiao233.createmoremachines.api.content.IHaveTierInformation;
 import net.yxiao233.createmoremachines.api.registry.CMMTier;
 import org.jetbrains.annotations.NotNull;
@@ -169,6 +169,11 @@ public class CMMCrushingWheelBlock extends CrushingWheelBlock implements IHaveTi
 
     @Override
     public void addTierInformation(List<Component> tooltips) {
-        CMMTierTooltip.byTypes(tooltips, tier, CMMTierTooltip.Type.PROCESSING_MULTIPLE);
+        // Not CMMTierTooltip.PROCESSING_MULTIPLE: that renders the raw CMM tier multiple and
+        // never sees this addon's per-machine config override. The number below goes through
+        // the same CMMMConfig resolver as the controller's slot-0 batch, so the tooltip shows
+        // the parallel count that is actually in effect.
+        tooltips.add(Component.translatable(CMMMConfig.TOOLTIP_PROCESSING_MULTIPLE,
+            CMMMConfig.clampProcessingMultiple(CMMMConfig.crushingWheelProcessingMultiple(tier))));
     }
 }

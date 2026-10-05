@@ -11,11 +11,13 @@ import net.tomorrow325.createmoremoremachines.CreateMoreMoreMachines;
  * snapshot). Like CMM, this addon listens to no {@code ModConfigEvent.Reloading}, so config
  * edits take effect on the next game start.
  *
- * <p>Every entry defaults to {@code -1}; the resolvers in {@code CMMMConfig} translate a value
- * below 0 to "follow the tier's CMM processing multiple", which reproduces the previous,
- * un-overridden behaviour. The snapshots start at {@code -1} as well, so an unexpected read
- * before the loading event degrades safely to the follow-CMM behaviour instead of zeroing a
- * batch size or a speed.
+ * <p>Every entry defaults to the processing multiple of the same tier's CMM Deployer as shipped
+ * by CMM's {@code CMMConfig} (brass 4, netherite 8, end 16, beyond 32, creative 64), so the
+ * addon machines start out matching their same-tier CMM deployer rather than the usually larger
+ * tier processing multiple. The resolvers in {@code CMMMConfig} still translate an explicitly
+ * configured value below 0 to "follow the tier's CMM processing multiple". The snapshots start
+ * at {@code -1} as well, so an unexpected read before the loading event degrades safely to the
+ * follow-CMM behaviour instead of zeroing a batch size or a speed.
  */
 public class CMMMTierConfig {
     private ModConfigSpec.IntValue CRUSHING_WHEEL_PROCESSING_MULTIPLE;
@@ -27,13 +29,21 @@ public class CMMMTierConfig {
     private int tieredMechanicalSawProcessingMultiple = -1;
     private int tieredMechanicalSawSpeedMultiple = -1;
     private final String tier;
+    private final int crushingWheelProcessingMultiple;
+    private final int crushingWheelSpeedMultiple;
+    private final int mechanicalSawProcessingMultiple;
+    private final int mechanicalSawSpeedMultiple;
 
-    private CMMMTierConfig(String tier){
+    private CMMMTierConfig(String tier, int crushingWheelProcessingMultiple, int crushingWheelSpeedMultiple, int mechanicalSawProcessingMultiple, int mechanicalSawSpeedMultiple){
         this.tier = tier;
+        this.crushingWheelProcessingMultiple = crushingWheelProcessingMultiple;
+        this.crushingWheelSpeedMultiple = crushingWheelSpeedMultiple;
+        this.mechanicalSawProcessingMultiple = mechanicalSawProcessingMultiple;
+        this.mechanicalSawSpeedMultiple = mechanicalSawSpeedMultiple;
     }
 
-    public static CMMMTierConfig create(String tier){
-        return new CMMMTierConfig(tier);
+    public static CMMMTierConfig create(String tier, int crushingWheelProcessingMultiple, int crushingWheelSpeedMultiple, int mechanicalSawProcessingMultiple, int mechanicalSawSpeedMultiple){
+        return new CMMMTierConfig(tier, crushingWheelProcessingMultiple, crushingWheelSpeedMultiple, mechanicalSawProcessingMultiple, mechanicalSawSpeedMultiple);
     }
 
     public void registry(ModConfigSpec.Builder BUILDER){
@@ -44,30 +54,30 @@ public class CMMMTierConfig {
         // CMMBeltDeployerCallbacks Math.min(multiple, 64)); 0/1 disables the parallel feature.
         CRUSHING_WHEEL_PROCESSING_MULTIPLE = BUILDER
                 .translation(key("crushing_wheel_processing_multiple"))
-                .comment("Parallel processing batch size for " + tier + " tier crushing wheel[default:-1] (-1 follows the " + tier + " tier processing multiple of CreateMoreMachines, values above 1 are capped at 64)")
-                .defineInRange(tier + "_crushing_wheel_processing_multiple",-1,-1,64);
+                .comment("Parallel processing batch size for " + tier + " tier crushing wheel[default:" + crushingWheelProcessingMultiple + "] (-1 follows the " + tier + " tier processing multiple of CreateMoreMachines, values above 1 are capped at 64)")
+                .defineInRange(tier + "_crushing_wheel_processing_multiple",crushingWheelProcessingMultiple,-1,64);
 
         // Speed entry: [-1, Integer.MAX_VALUE]. -1 follows CMM; >= 2 divides the crushing
         // duration (floored by MIN_CYCLE_DURATION at the use site); 0/1 keeps the vanilla speed.
         CRUSHING_WHEEL_SPEED_MULTIPLE = BUILDER
                 .translation(key("crushing_wheel_speed_multiple"))
-                .comment("Speed multiple for " + tier + " tier crushing wheel, the crushing duration is divided by it[default:-1] (-1 follows the " + tier + " tier processing multiple of CreateMoreMachines, values below 2 keep the vanilla speed)")
-                .defineInRange(tier + "_crushing_wheel_speed_multiple",-1,-1,Integer.MAX_VALUE);
+                .comment("Speed multiple for " + tier + " tier crushing wheel, the crushing duration is divided by it[default:" + crushingWheelSpeedMultiple + "] (-1 follows the " + tier + " tier processing multiple of CreateMoreMachines, values below 2 keep the vanilla speed)")
+                .defineInRange(tier + "_crushing_wheel_speed_multiple",crushingWheelSpeedMultiple,-1,Integer.MAX_VALUE);
 
         // Parallel entry: [-1, 64]. -1 follows CMM; >= 2 is an explicit batch size whose runtime
         // clamp of 64 matches CMM's own deployer clamp; 0/1 collapses to the vanilla saw
         // baseline of one item per slot 0 through the use-site Math.max(..., 1).
         MECHANICAL_SAW_PROCESSING_MULTIPLE = BUILDER
                 .translation(key("mechanical_saw_processing_multiple"))
-                .comment("Parallel processing batch size for " + tier + " tier mechanical saw[default:-1] (-1 follows the " + tier + " tier processing multiple of CreateMoreMachines, values above 1 are capped at 64)")
-                .defineInRange(tier + "_mechanical_saw_processing_multiple",-1,-1,64);
+                .comment("Parallel processing batch size for " + tier + " tier mechanical saw[default:" + mechanicalSawProcessingMultiple + "] (-1 follows the " + tier + " tier processing multiple of CreateMoreMachines, values above 1 are capped at 64)")
+                .defineInRange(tier + "_mechanical_saw_processing_multiple",mechanicalSawProcessingMultiple,-1,64);
 
         // Speed entry: [-1, Integer.MAX_VALUE]. -1 follows CMM; >= 2 divides the cutting
         // duration (floored by MIN_CYCLE_DURATION at the use site); 0/1 keeps the vanilla speed.
         MECHANICAL_SAW_SPEED_MULTIPLE = BUILDER
                 .translation(key("mechanical_saw_speed_multiple"))
-                .comment("Speed multiple for " + tier + " tier mechanical saw, the cutting duration is divided by it[default:-1] (-1 follows the " + tier + " tier processing multiple of CreateMoreMachines, values below 2 keep the vanilla speed)")
-                .defineInRange(tier + "_mechanical_saw_speed_multiple",-1,-1,Integer.MAX_VALUE);
+                .comment("Speed multiple for " + tier + " tier mechanical saw, the cutting duration is divided by it[default:" + mechanicalSawSpeedMultiple + "] (-1 follows the " + tier + " tier processing multiple of CreateMoreMachines, values below 2 keep the vanilla speed)")
+                .defineInRange(tier + "_mechanical_saw_speed_multiple",mechanicalSawSpeedMultiple,-1,Integer.MAX_VALUE);
 
         BUILDER.pop();
     }

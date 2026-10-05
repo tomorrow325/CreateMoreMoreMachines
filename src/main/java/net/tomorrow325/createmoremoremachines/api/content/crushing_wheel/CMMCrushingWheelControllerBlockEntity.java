@@ -49,8 +49,9 @@ import net.yxiao233.createmoremachines.api.registry.CMMTier;
  *
  * <p>Both multiples (the batch size above and the speed division in the bullet before it) are
  * resolved through {@code CMMMConfig} instead of being read straight from the tier: its
- * per-tier addon entries default to {@code -1} = follow the tier's CMM processing multiple
- * (the un-overridden behaviour), while an explicit value of 2 or above overrides it.
+ * per-tier addon entries default to the processing multiple of the same tier's CMM deployer,
+ * an explicit value of 2 or above overrides it, and an explicit {@code -1} follows the tier's
+ * CMM processing multiple.
  *
  * <p>The vanilla apply threshold is {@code remainingTime < 20} while the countdown loses up to
  * 20 per tick (the clamp maximum of {@code speed * 4 / log2(count)}), so a divided duration of
@@ -90,7 +91,7 @@ public class CMMCrushingWheelControllerBlockEntity extends CrushingWheelControll
      * {@code remainingTime < 20} and the countdown loses up to 20 per tick (the clamp maximum),
      * so 60 leaves at least two ticks of batch-accumulation window before the recipe fires
      * while still running visibly faster than the vanilla baseline of 100. The dividing
-     * multiple is the {@code CMMMConfig} speed resolver (default {@code -1} = the tier's CMM
+     * multiple is the {@code CMMMConfig} speed resolver (default = the tier's CMM deployer
      * processing multiple); this floor itself stays fixed.
      */
     public static final int MIN_CYCLE_DURATION = 60;
@@ -126,8 +127,8 @@ public class CMMCrushingWheelControllerBlockEntity extends CrushingWheelControll
                 // custom tiers, or an explicit addon value below 2) must keep that vanilla
                 // baseline instead of being squeezed down to a single item per insertion;
                 // configured multiples (>= 2, floored at 64) express the tier batch as the slot
-                // 0 capacity. The multiple comes from CMMMConfig's resolver, whose default
-                // (-1) follows the tier's CMM processing multiple.
+                // 0 capacity. The multiple comes from CMMMConfig's resolver, whose default is
+                // the tier's CMM deployer processing multiple.
                 int multiple = CMMMConfig.crushingWheelProcessingMultiple(tier);
                 if (slot == 0 && multiple > 1)
                     return Math.min(multiple, MAX_BATCH);
@@ -162,7 +163,7 @@ public class CMMCrushingWheelControllerBlockEntity extends CrushingWheelControll
         if (recipe.isEmpty())
             recipe = AllRecipeTypes.MILLING.find(cmmWrapper, level);
 
-        // Resolved speed multiple: CMMMConfig's default (-1) follows the tier's CMM processing
+        // Resolved speed multiple: CMMMConfig's default is the tier's CMM deployer processing
         // multiple; values <= 1 keep the vanilla speed and skip the division below.
         int multiple = CMMMConfig.crushingWheelSpeedMultiple(tier);
         if (recipe.isEmpty() || multiple <= 1)

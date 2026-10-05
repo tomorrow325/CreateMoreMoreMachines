@@ -8,5 +8,6 @@
 	"config.createmoremoremachines.crushing_wheel_processing_multiple": "Crushing Wheel Parallel Processing Multiple",
 	"config.createmoremoremachines.crushing_wheel_speed_multiple": "Crushing Wheel Speed Multiple",
 	"config.createmoremoremachines.mechanical_saw_processing_multiple": "Mechanical Saw Parallel Processing Multiple",
-	"config.createmoremoremachines.mechanical_saw_speed_multiple": "Mechanical Saw Speed Multiple"
+	"config.createmoremoremachines.mechanical_saw_speed_multiple": "Mechanical Saw Speed Multiple",
+	"tooltip.createmoremoremachines.processing_multiple": "§aProcessing Multiple:§f %d"
 }
