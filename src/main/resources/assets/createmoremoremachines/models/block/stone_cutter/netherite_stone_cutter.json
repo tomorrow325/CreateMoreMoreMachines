@@ -1,0 +1,11 @@
+{
+	"parent": "create:block/mechanical_saw/horizontal",
+	"textures": {
+		"slit": "createmoremachines:block/netherite_press_top",
+		"particle": "createmoremachines:block/netherite_casing",
+		"gearbox_top": "create:block/gearbox_top",
+		"encased_belt": "createmoremachines:block/netherite_encased_pipe",
+		"gearbox": "createmoremachines:block/netherite_gearbox",
+		"andesite_casing_short": "createmoremachines:block/netherite_casing_short"
+	}
+}

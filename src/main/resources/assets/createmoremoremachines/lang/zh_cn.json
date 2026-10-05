@@ -1,0 +1,14 @@
+{
+	"block.createmoremoremachines.stone_cutter": "机械切石机",
+
+	"config.createmoremoremachines.tier_settings": "等级设置",
+	"config.createmoremoremachines.brass_tier": "黄铜等级",
+	"config.createmoremoremachines.netherite_tier": "下界等级",
+	"config.createmoremoremachines.end_tier": "末地等级",
+	"config.createmoremoremachines.beyond_tier": "超越等级",
+	"config.createmoremoremachines.creative_tier": "创造等级",
+	"config.createmoremoremachines.crushing_wheel_processing_multiple": "粉碎轮处理并行数",
+	"config.createmoremoremachines.crushing_wheel_speed_multiple": "粉碎轮速度倍率",
+	"config.createmoremoremachines.stone_cutter_processing_multiple": "切石机处理并行数",
+	"config.createmoremoremachines.stone_cutter_speed_multiple": "切石机速度倍率"
+}

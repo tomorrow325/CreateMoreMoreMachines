@@ -1,0 +1,37 @@
+# gradle
+.gradle/
+build/
+repo/
+
+# ide
+.idea/
+*.iml
+*.ipr
+*.iws
+.vscode/
+.classpath
+.project
+.settings/
+bin/
+eclipse/
+
+# minecraft dev runs
+run/
+runs/
+
+# 依赖 mod 的源码克隆（构建后发布到 mavenLocal）
+CreateMoreMachines/
+
+# misc
+*.log
+.DS_Store
+
+# session tooling
+.zcode/
+
+# windows redirect artifact
+nul
+*.bak
+
+# datagen hash cache
+src/generated/resources/.cache/

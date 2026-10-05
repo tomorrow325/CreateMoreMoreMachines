@@ -1,0 +1,14 @@
+{
+	"block.createmoremoremachines.stone_cutter": "Mechanical Stone Cutter",
+
+	"config.createmoremoremachines.tier_settings": "Tier Settings",
+	"config.createmoremoremachines.brass_tier": "Brass Tier",
+	"config.createmoremoremachines.netherite_tier": "Netherite Tier",
+	"config.createmoremoremachines.end_tier": "End Tier",
+	"config.createmoremoremachines.beyond_tier": "Beyond Tier",
+	"config.createmoremoremachines.creative_tier": "Creative Tier",
+	"config.createmoremoremachines.crushing_wheel_processing_multiple": "Crushing Wheel Parallel Processing Multiple",
+	"config.createmoremoremachines.crushing_wheel_speed_multiple": "Crushing Wheel Speed Multiple",
+	"config.createmoremoremachines.stone_cutter_processing_multiple": "Stone Cutter Parallel Processing Multiple",
+	"config.createmoremoremachines.stone_cutter_speed_multiple": "Stone Cutter Speed Multiple"
+}
