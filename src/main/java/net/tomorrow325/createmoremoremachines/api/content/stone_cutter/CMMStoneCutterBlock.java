@@ -1,4 +1,4 @@
-package net.yxiao233.createmoremoremachines.api.content.stone_cutter;
+package net.tomorrow325.createmoremoremachines.api.content.stone_cutter;
 
 import java.util.List;
 
@@ -8,7 +8,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.Util;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.yxiao233.createmoremoremachines.common.registry.CMMMRegistryEntry;
+import net.tomorrow325.createmoremoremachines.common.registry.CMMMRegistryEntry;
 import net.yxiao233.createmoremachines.api.CMMTierTooltip;
 import net.yxiao233.createmoremachines.api.content.IHaveTierInformation;
 import net.yxiao233.createmoremachines.api.registry.CMMTier;

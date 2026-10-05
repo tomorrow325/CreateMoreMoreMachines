@@ -1,9 +1,9 @@
-package net.yxiao233.createmoremoremachines.common.event;
+package net.tomorrow325.createmoremoremachines.common.event;
 
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
-import net.yxiao233.createmoremoremachines.CreateMoreMoreMachines;
-import net.yxiao233.createmoremoremachines.common.registry.CMMMRegistryEntry;
+import net.tomorrow325.createmoremoremachines.CreateMoreMoreMachines;
+import net.tomorrow325.createmoremoremachines.common.registry.CMMMRegistryEntry;
 import net.yxiao233.createmoremachines.api.registry.CMMTier;
 import net.yxiao233.createmoremachines.common.registry.CMMCreativeModeTab;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;

@@ -1,12 +1,12 @@
-package net.yxiao233.createmoremoremachines.common.event;
+package net.tomorrow325.createmoremoremachines.common.event;
 
 import net.minecraft.core.Direction;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
-import net.yxiao233.createmoremoremachines.CreateMoreMoreMachines;
-import net.yxiao233.createmoremoremachines.common.registry.CMMMRegistryEntry;
+import net.tomorrow325.createmoremoremachines.CreateMoreMoreMachines;
+import net.tomorrow325.createmoremoremachines.common.registry.CMMMRegistryEntry;
 
 /**
  * Registers the item capabilities of this addon's block entities. Create's own static

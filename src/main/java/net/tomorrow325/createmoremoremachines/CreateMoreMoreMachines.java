@@ -1,4 +1,4 @@
-package net.yxiao233.createmoremoremachines;
+package net.tomorrow325.createmoremoremachines;
 
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.DataGenerator;
@@ -13,7 +13,7 @@ import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.neoforge.client.gui.ConfigurationScreen;
 import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
-import net.yxiao233.createmoremoremachines.datagen.CMMMRecipeProvider;
+import net.tomorrow325.createmoremoremachines.datagen.CMMMRecipeProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

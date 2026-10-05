@@ -1,8 +1,8 @@
-package net.yxiao233.createmoremoremachines.api.config;
+package net.tomorrow325.createmoremoremachines.api.config;
 
 import net.neoforged.fml.event.config.ModConfigEvent;
 import net.neoforged.neoforge.common.ModConfigSpec;
-import net.yxiao233.createmoremoremachines.CreateMoreMoreMachines;
+import net.tomorrow325.createmoremoremachines.CreateMoreMoreMachines;
 
 /**
  * Per-tier config entries for the two machines added by this addon, mirroring CMM's

@@ -1,4 +1,4 @@
-package net.yxiao233.createmoremoremachines.api.content.stone_cutter;
+package net.tomorrow325.createmoremoremachines.api.content.stone_cutter;
 
 import com.simibubi.create.content.kinetics.saw.SawBlockEntity;
 import com.simibubi.create.content.processing.recipe.ProcessingInventory;
@@ -7,7 +7,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.yxiao233.createmoremoremachines.CMMMConfig;
+import net.tomorrow325.createmoremoremachines.CMMMConfig;
 import net.yxiao233.createmoremachines.api.registry.CMMTier;
 
 /**

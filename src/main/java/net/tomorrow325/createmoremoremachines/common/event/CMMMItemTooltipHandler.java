@@ -1,4 +1,4 @@
-package net.yxiao233.createmoremoremachines.common.event;
+package net.tomorrow325.createmoremoremachines.common.event;
 
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.item.Item;
@@ -6,7 +6,7 @@ import net.minecraft.world.level.block.Block;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
-import net.yxiao233.createmoremoremachines.CreateMoreMoreMachines;
+import net.tomorrow325.createmoremoremachines.CreateMoreMoreMachines;
 import net.yxiao233.createmoremachines.api.content.IHaveTierInformation;
 
 import java.util.List;

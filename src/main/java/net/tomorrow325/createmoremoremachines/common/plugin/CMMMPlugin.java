@@ -1,8 +1,8 @@
-package net.yxiao233.createmoremoremachines.common.plugin;
+package net.tomorrow325.createmoremoremachines.common.plugin;
 
-import net.yxiao233.createmoremoremachines.CreateMoreMoreMachines;
-import net.yxiao233.createmoremoremachines.common.registry.CMMMAdvancedMachineTypes;
-import net.yxiao233.createmoremoremachines.common.registry.CMMMRegistryEntry;
+import net.tomorrow325.createmoremoremachines.CreateMoreMoreMachines;
+import net.tomorrow325.createmoremoremachines.common.registry.CMMMAdvancedMachineTypes;
+import net.tomorrow325.createmoremoremachines.common.registry.CMMMRegistryEntry;
 import net.yxiao233.createmoremachines.api.registry.CMMTier;
 import net.yxiao233.createmoremachines.api.registry.CMMPlugin;
 import net.yxiao233.createmoremachines.api.registry.ICMMPlugin;

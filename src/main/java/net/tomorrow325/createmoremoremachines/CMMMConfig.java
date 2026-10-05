@@ -1,8 +1,8 @@
-package net.yxiao233.createmoremoremachines;
+package net.tomorrow325.createmoremoremachines;
 
 import net.neoforged.fml.event.config.ModConfigEvent;
 import net.neoforged.neoforge.common.ModConfigSpec;
-import net.yxiao233.createmoremoremachines.api.config.CMMMTierConfig;
+import net.tomorrow325.createmoremoremachines.api.config.CMMMTierConfig;
 import net.yxiao233.createmoremachines.api.registry.CMMTier;
 
 /**

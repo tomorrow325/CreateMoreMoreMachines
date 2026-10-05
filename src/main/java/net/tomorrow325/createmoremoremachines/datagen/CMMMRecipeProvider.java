@@ -1,4 +1,4 @@
-package net.yxiao233.createmoremoremachines.datagen;
+package net.tomorrow325.createmoremoremachines.datagen;
 
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
@@ -16,7 +16,7 @@ import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.data.recipes.ShapelessRecipeBuilder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
-import net.yxiao233.createmoremoremachines.common.registry.CMMMRegistryEntry;
+import net.tomorrow325.createmoremoremachines.common.registry.CMMMRegistryEntry;
 import net.yxiao233.createmoremachines.api.registry.CMMTier;
 import net.yxiao233.createmoremachines.common.registry.CMMRegistryEntry;
 import org.jetbrains.annotations.NotNull;

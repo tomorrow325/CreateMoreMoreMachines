@@ -1,4 +1,4 @@
-package net.yxiao233.createmoremoremachines.common.registry;
+package net.tomorrow325.createmoremoremachines.common.registry;
 
 import java.util.Map;
 
@@ -6,8 +6,8 @@ import com.simibubi.create.AllBlocks;
 import com.tterrag.registrate.util.entry.BlockEntry;
 
 import net.minecraft.resources.ResourceLocation;
-import net.yxiao233.createmoremoremachines.api.content.crushing_wheel.CMMCrushingWheelBlock;
-import net.yxiao233.createmoremoremachines.api.content.stone_cutter.CMMStoneCutterBlock;
+import net.tomorrow325.createmoremoremachines.api.content.crushing_wheel.CMMCrushingWheelBlock;
+import net.tomorrow325.createmoremoremachines.api.content.stone_cutter.CMMStoneCutterBlock;
 import net.yxiao233.createmoremachines.api.registry.BuiltInAdvancedMachineTypes;
 import net.yxiao233.createmoremachines.api.registry.BuiltInAdvancedMachineTypes.AdvancedMachineType;
 import net.yxiao233.createmoremachines.api.registry.CMMTier;

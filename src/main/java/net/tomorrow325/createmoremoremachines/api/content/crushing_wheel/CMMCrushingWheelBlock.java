@@ -1,4 +1,4 @@
-package net.yxiao233.createmoremoremachines.api.content.crushing_wheel;
+package net.tomorrow325.createmoremoremachines.api.content.crushing_wheel;
 
 import java.util.List;
 
@@ -19,7 +19,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
-import net.yxiao233.createmoremoremachines.common.registry.CMMMRegistryEntry;
+import net.tomorrow325.createmoremoremachines.common.registry.CMMMRegistryEntry;
 import net.yxiao233.createmoremachines.api.CMMTierTooltip;
 import net.yxiao233.createmoremachines.api.content.IHaveTierInformation;
 import net.yxiao233.createmoremachines.api.registry.CMMTier;

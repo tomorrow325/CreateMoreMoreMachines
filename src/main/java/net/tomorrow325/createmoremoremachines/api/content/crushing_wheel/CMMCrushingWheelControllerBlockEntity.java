@@ -1,4 +1,4 @@
-package net.yxiao233.createmoremoremachines.api.content.crushing_wheel;
+package net.tomorrow325.createmoremoremachines.api.content.crushing_wheel;
 
 import java.util.Optional;
 
@@ -14,7 +14,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.items.wrapper.RecipeWrapper;
-import net.yxiao233.createmoremoremachines.CMMMConfig;
+import net.tomorrow325.createmoremoremachines.CMMMConfig;
 import net.yxiao233.createmoremachines.api.registry.CMMTier;
 
 /**

@@ -1,4 +1,4 @@
-package net.yxiao233.createmoremoremachines.api.content.crushing_wheel;
+package net.tomorrow325.createmoremoremachines.api.content.crushing_wheel;
 
 import com.simibubi.create.content.kinetics.crusher.CrushingWheelBlockEntity;
 import com.simibubi.create.content.kinetics.crusher.CrushingWheelControllerBlock;
@@ -14,7 +14,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.yxiao233.createmoremoremachines.common.registry.CMMMRegistryEntry;
+import net.tomorrow325.createmoremoremachines.common.registry.CMMMRegistryEntry;
 import net.yxiao233.createmoremachines.api.registry.CMMTier;
 
 /**

@@ -1,4 +1,4 @@
-package net.yxiao233.createmoremoremachines.compact.jei;
+package net.tomorrow325.createmoremoremachines.compact.jei;
 
 import com.simibubi.create.Create;
 import com.tterrag.registrate.util.entry.BlockEntry;
@@ -8,8 +8,8 @@ import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.registration.IRecipeCatalystRegistration;
 import net.minecraft.resources.ResourceLocation;
-import net.yxiao233.createmoremoremachines.CreateMoreMoreMachines;
-import net.yxiao233.createmoremoremachines.common.registry.CMMMRegistryEntry;
+import net.tomorrow325.createmoremoremachines.CreateMoreMoreMachines;
+import net.tomorrow325.createmoremoremachines.common.registry.CMMMRegistryEntry;
 import net.yxiao233.createmoremachines.api.registry.CMMTier;
 import org.jetbrains.annotations.NotNull;
 

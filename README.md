@@ -44,7 +44,7 @@ Minecraft 1.21.1 / NeoForge mod，[Create](https://github.com/Creators-of-Create
 | Create | 6.0.10（cursemaven） |
 | Parchment | 2024.11.17 |
 | modid | `createmoremoremachines` |
-| 主类 | `net.yxiao233.createmoremoremachines.CreateMoreMoreMachines` |
+| 主类 | `net.tomorrow325.createmoremoremachines.CreateMoreMoreMachines` |
 
 ## IDE
 
