@@ -20,12 +20,12 @@ import net.tomorrow325.createmoremoremachines.CreateMoreMoreMachines;
 public class CMMMTierConfig {
     private ModConfigSpec.IntValue CRUSHING_WHEEL_PROCESSING_MULTIPLE;
     private ModConfigSpec.IntValue CRUSHING_WHEEL_SPEED_MULTIPLE;
-    private ModConfigSpec.IntValue STONE_CUTTER_PROCESSING_MULTIPLE;
-    private ModConfigSpec.IntValue STONE_CUTTER_SPEED_MULTIPLE;
+    private ModConfigSpec.IntValue MECHANICAL_SAW_PROCESSING_MULTIPLE;
+    private ModConfigSpec.IntValue MECHANICAL_SAW_SPEED_MULTIPLE;
     private int tieredCrushingWheelProcessingMultiple = -1;
     private int tieredCrushingWheelSpeedMultiple = -1;
-    private int tieredStoneCutterProcessingMultiple = -1;
-    private int tieredStoneCutterSpeedMultiple = -1;
+    private int tieredMechanicalSawProcessingMultiple = -1;
+    private int tieredMechanicalSawSpeedMultiple = -1;
     private final String tier;
 
     private CMMMTierConfig(String tier){
@@ -57,17 +57,17 @@ public class CMMMTierConfig {
         // Parallel entry: [-1, 64]. -1 follows CMM; >= 2 is an explicit batch size whose runtime
         // clamp of 64 matches CMM's own deployer clamp; 0/1 collapses to the vanilla saw
         // baseline of one item per slot 0 through the use-site Math.max(..., 1).
-        STONE_CUTTER_PROCESSING_MULTIPLE = BUILDER
-                .translation(key("stone_cutter_processing_multiple"))
-                .comment("Parallel processing batch size for " + tier + " tier stone cutter[default:-1] (-1 follows the " + tier + " tier processing multiple of CreateMoreMachines, values above 1 are capped at 64)")
-                .defineInRange(tier + "_stone_cutter_processing_multiple",-1,-1,64);
+        MECHANICAL_SAW_PROCESSING_MULTIPLE = BUILDER
+                .translation(key("mechanical_saw_processing_multiple"))
+                .comment("Parallel processing batch size for " + tier + " tier mechanical saw[default:-1] (-1 follows the " + tier + " tier processing multiple of CreateMoreMachines, values above 1 are capped at 64)")
+                .defineInRange(tier + "_mechanical_saw_processing_multiple",-1,-1,64);
 
         // Speed entry: [-1, Integer.MAX_VALUE]. -1 follows CMM; >= 2 divides the cutting
         // duration (floored by MIN_CYCLE_DURATION at the use site); 0/1 keeps the vanilla speed.
-        STONE_CUTTER_SPEED_MULTIPLE = BUILDER
-                .translation(key("stone_cutter_speed_multiple"))
-                .comment("Speed multiple for " + tier + " tier stone cutter, the cutting duration is divided by it[default:-1] (-1 follows the " + tier + " tier processing multiple of CreateMoreMachines, values below 2 keep the vanilla speed)")
-                .defineInRange(tier + "_stone_cutter_speed_multiple",-1,-1,Integer.MAX_VALUE);
+        MECHANICAL_SAW_SPEED_MULTIPLE = BUILDER
+                .translation(key("mechanical_saw_speed_multiple"))
+                .comment("Speed multiple for " + tier + " tier mechanical saw, the cutting duration is divided by it[default:-1] (-1 follows the " + tier + " tier processing multiple of CreateMoreMachines, values below 2 keep the vanilla speed)")
+                .defineInRange(tier + "_mechanical_saw_speed_multiple",-1,-1,Integer.MAX_VALUE);
 
         BUILDER.pop();
     }
@@ -76,8 +76,8 @@ public class CMMMTierConfig {
     public void onLoad(ModConfigEvent.Loading event){
         this.tieredCrushingWheelProcessingMultiple = CRUSHING_WHEEL_PROCESSING_MULTIPLE.get();
         this.tieredCrushingWheelSpeedMultiple = CRUSHING_WHEEL_SPEED_MULTIPLE.get();
-        this.tieredStoneCutterProcessingMultiple = STONE_CUTTER_PROCESSING_MULTIPLE.get();
-        this.tieredStoneCutterSpeedMultiple = STONE_CUTTER_SPEED_MULTIPLE.get();
+        this.tieredMechanicalSawProcessingMultiple = MECHANICAL_SAW_PROCESSING_MULTIPLE.get();
+        this.tieredMechanicalSawSpeedMultiple = MECHANICAL_SAW_SPEED_MULTIPLE.get();
     }
 
     public int getCrushingWheelProcessingMultiple(){
@@ -88,12 +88,12 @@ public class CMMMTierConfig {
         return tieredCrushingWheelSpeedMultiple;
     }
 
-    public int getStoneCutterProcessingMultiple(){
-        return tieredStoneCutterProcessingMultiple;
+    public int getMechanicalSawProcessingMultiple(){
+        return tieredMechanicalSawProcessingMultiple;
     }
 
-    public int getStoneCutterSpeedMultiple(){
-        return tieredStoneCutterSpeedMultiple;
+    public int getMechanicalSawSpeedMultiple(){
+        return tieredMechanicalSawSpeedMultiple;
     }
 
     /**

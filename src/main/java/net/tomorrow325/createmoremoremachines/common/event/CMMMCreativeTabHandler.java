@@ -26,10 +26,10 @@ public class CMMMCreativeTabHandler {
                     .get(id);
                 if (wheel != null)
                     event.accept(wheel);
-                var stoneCutter = CMMMRegistryEntry.getStoneCutters()
+                var mechanicalSaw = CMMMRegistryEntry.getMechanicalSaws()
                     .get(id);
-                if (stoneCutter != null)
-                    event.accept(stoneCutter);
+                if (mechanicalSaw != null)
+                    event.accept(mechanicalSaw);
             });
     }
 }

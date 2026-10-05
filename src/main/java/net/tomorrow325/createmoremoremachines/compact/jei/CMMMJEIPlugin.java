@@ -46,12 +46,12 @@ public class CMMMJEIPlugin implements IModPlugin {
                     registration.addRecipeCatalyst(wheel, crushing);
                     registration.addRecipeCatalyst(wheel, milling);
                 }
-                BlockEntry<?> stoneCutter = CMMMRegistryEntry.getStoneCutters()
+                BlockEntry<?> mechanicalSaw = CMMMRegistryEntry.getMechanicalSaws()
                     .get(id);
-                if (stoneCutter != null) {
+                if (mechanicalSaw != null) {
                     // Create's saw natively supports cutting plus (config-gated, default on) vanilla stonecutting.
-                    registration.addRecipeCatalyst(stoneCutter, cutting);
-                    registration.addRecipeCatalyst(stoneCutter, stonecutting);
+                    registration.addRecipeCatalyst(mechanicalSaw, cutting);
+                    registration.addRecipeCatalyst(mechanicalSaw, stonecutting);
                 }
             });
     }

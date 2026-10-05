@@ -1,0 +1,11 @@
+{
+	"parent": "create:block/mechanical_saw/horizontal",
+	"textures": {
+		"slit": "createmoremoremachines:block/end_mechanical_saw_saw_top_no_slot",
+		"particle": "createmoremoremachines:block/end_mechanical_saw_gearbox_top",
+		"gearbox_top": "createmoremoremachines:block/end_mechanical_saw_gearbox_top",
+		"encased_belt": "createmoremoremachines:block/end_mechanical_saw_belt",
+		"gearbox": "createmoremoremachines:block/end_mechanical_saw_gearbox",
+		"andesite_casing_short": "createmoremachines:block/end_casing_short"
+	}
+}

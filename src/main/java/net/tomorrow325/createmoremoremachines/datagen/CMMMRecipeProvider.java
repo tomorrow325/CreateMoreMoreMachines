@@ -53,16 +53,16 @@ public class CMMMRecipeProvider extends RecipeProvider {
         upgradeRecipe(CMMMRegistryEntry.getCrushingWheels(), null, CMMRegistryEntry.BEYOND_ALLOY_SHEET, "end", "beyond")
             .save(recipeOutput);
 
-        // Stone Cutter: vanilla saw -> brass -> netherite -> end -> beyond
-        upgradeRecipe(CMMMRegistryEntry.getStoneCutters(), AllBlocks.MECHANICAL_SAW, AllItems.BRASS_SHEET, null,
+        // Mechanical Saw: vanilla saw -> brass -> netherite -> end -> beyond
+        upgradeRecipe(CMMMRegistryEntry.getMechanicalSaws(), AllBlocks.MECHANICAL_SAW, AllItems.BRASS_SHEET, null,
             "brass")
             .save(recipeOutput);
-        upgradeRecipe(CMMMRegistryEntry.getStoneCutters(), null, CMMRegistryEntry.NETHERITE_ALLOY_SHEET, "brass",
+        upgradeRecipe(CMMMRegistryEntry.getMechanicalSaws(), null, CMMRegistryEntry.NETHERITE_ALLOY_SHEET, "brass",
             "netherite")
             .save(recipeOutput);
-        upgradeRecipe(CMMMRegistryEntry.getStoneCutters(), null, CMMRegistryEntry.END_ALLOY_SHEET, "netherite", "end")
+        upgradeRecipe(CMMMRegistryEntry.getMechanicalSaws(), null, CMMRegistryEntry.END_ALLOY_SHEET, "netherite", "end")
             .save(recipeOutput);
-        upgradeRecipe(CMMMRegistryEntry.getStoneCutters(), null, CMMRegistryEntry.BEYOND_ALLOY_SHEET, "end", "beyond")
+        upgradeRecipe(CMMMRegistryEntry.getMechanicalSaws(), null, CMMRegistryEntry.BEYOND_ALLOY_SHEET, "end", "beyond")
             .save(recipeOutput);
     }
 

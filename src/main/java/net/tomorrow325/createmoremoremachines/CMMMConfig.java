@@ -87,19 +87,19 @@ public class CMMMConfig {
         return value < 0 ? tier.getProcessingMultiple() : value;
     }
 
-    public static int stoneCutterProcessingMultiple(CMMTier tier) {
+    public static int mechanicalSawProcessingMultiple(CMMTier tier) {
         CMMMTierConfig config = forTier(tier);
         if (config == null)
             return tier.getProcessingMultiple();
-        int value = config.getStoneCutterProcessingMultiple();
+        int value = config.getMechanicalSawProcessingMultiple();
         return value < 0 ? tier.getProcessingMultiple() : value;
     }
 
-    public static int stoneCutterSpeedMultiple(CMMTier tier) {
+    public static int mechanicalSawSpeedMultiple(CMMTier tier) {
         CMMMTierConfig config = forTier(tier);
         if (config == null)
             return tier.getProcessingMultiple();
-        int value = config.getStoneCutterSpeedMultiple();
+        int value = config.getMechanicalSawSpeedMultiple();
         return value < 0 ? tier.getProcessingMultiple() : value;
     }
 }

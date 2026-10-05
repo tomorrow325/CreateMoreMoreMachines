@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.simibubi.create.content.kinetics.base.KineticBlockEntityRenderer;
+import com.simibubi.create.content.kinetics.base.SingleAxisRotatingVisual;
 import com.simibubi.create.content.kinetics.saw.SawRenderer;
 import com.simibubi.create.content.kinetics.saw.SawVisual;
 import com.simibubi.create.content.processing.AssemblyOperatorBlockItem;
@@ -27,15 +28,16 @@ import net.tomorrow325.createmoremoremachines.api.content.crushing_wheel.CMMCrus
 import net.tomorrow325.createmoremoremachines.api.content.crushing_wheel.CMMCrushingWheelBlockEntity;
 import net.tomorrow325.createmoremoremachines.api.content.crushing_wheel.CMMCrushingWheelControllerBlock;
 import net.tomorrow325.createmoremoremachines.api.content.crushing_wheel.CMMCrushingWheelControllerBlockEntity;
-import net.tomorrow325.createmoremoremachines.api.content.stone_cutter.CMMStoneCutterBlock;
-import net.tomorrow325.createmoremoremachines.api.content.stone_cutter.CMMStoneCutterBlockEntity;
+import net.tomorrow325.createmoremoremachines.api.content.mechanical_saw.CMMMechanicalSawBlock;
+import net.tomorrow325.createmoremoremachines.api.content.mechanical_saw.CMMMechanicalSawBlockEntity;
 import net.yxiao233.createmoremachines.api.registry.CMMBlockStressValues;
+import net.yxiao233.createmoremachines.api.registry.CMMPartialModelsRegistry;
 import net.yxiao233.createmoremachines.api.registry.CMMTier;
 
 /**
  * All registration ids of this addon live in the {@code createmoremoremachines} namespace:
  * {@code {tier}_crushing_wheel}, {@code {tier}_crushing_wheel_controller} and
- * {@code {tier}_stone_cutter}; block entities share the name of their block, mirroring the
+ * {@code {tier}_mechanical_saw}; block entities share the name of their block, mirroring the
  * Create More Machines convention.
  *
  * <p>All asset providers (blockstate, item model, lang) are no-ops because every asset is
@@ -48,9 +50,9 @@ public class CMMMRegistryEntry {
     private static final Map<ResourceLocation, BlockEntry<CMMCrushingWheelControllerBlock>> CRUSHING_WHEEL_CONTROLLERS = new HashMap<>();
     private static final Map<ResourceLocation, BlockEntityEntry<CMMCrushingWheelBlockEntity>> CRUSHING_WHEEL_ENTITIES = new HashMap<>();
     private static final Map<ResourceLocation, BlockEntityEntry<CMMCrushingWheelControllerBlockEntity>> CRUSHING_WHEEL_CONTROLLER_ENTITIES = new HashMap<>();
-    // Stone Cutter
-    private static final Map<ResourceLocation, BlockEntry<CMMStoneCutterBlock>> STONE_CUTTERS = new HashMap<>();
-    private static final Map<ResourceLocation, BlockEntityEntry<CMMStoneCutterBlockEntity>> STONE_CUTTER_ENTITIES = new HashMap<>();
+    // Mechanical Saw
+    private static final Map<ResourceLocation, BlockEntry<CMMMechanicalSawBlock>> MECHANICAL_SAWS = new HashMap<>();
+    private static final Map<ResourceLocation, BlockEntityEntry<CMMMechanicalSawBlockEntity>> MECHANICAL_SAW_ENTITIES = new HashMap<>();
 
     public static Map<ResourceLocation, BlockEntry<CMMCrushingWheelBlock>> getCrushingWheels() {
         return Collections.unmodifiableMap(CRUSHING_WHEELS);
@@ -68,12 +70,12 @@ public class CMMMRegistryEntry {
         return Collections.unmodifiableMap(CRUSHING_WHEEL_CONTROLLER_ENTITIES);
     }
 
-    public static Map<ResourceLocation, BlockEntry<CMMStoneCutterBlock>> getStoneCutters() {
-        return Collections.unmodifiableMap(STONE_CUTTERS);
+    public static Map<ResourceLocation, BlockEntry<CMMMechanicalSawBlock>> getMechanicalSaws() {
+        return Collections.unmodifiableMap(MECHANICAL_SAWS);
     }
 
-    public static Map<ResourceLocation, BlockEntityEntry<CMMStoneCutterBlockEntity>> getStoneCutterEntities() {
-        return Collections.unmodifiableMap(STONE_CUTTER_ENTITIES);
+    public static Map<ResourceLocation, BlockEntityEntry<CMMMechanicalSawBlockEntity>> getMechanicalSawEntities() {
+        return Collections.unmodifiableMap(MECHANICAL_SAW_ENTITIES);
     }
 
     /**
@@ -86,8 +88,8 @@ public class CMMMRegistryEntry {
             if (CMMTier.shouldRegistry(tier, CMMMAdvancedMachineTypes.CRUSHING_WHEEL)) {
                 registerCrushingWheelSet(tier);
             }
-            if (CMMTier.shouldRegistry(tier, CMMMAdvancedMachineTypes.STONE_CUTTER)) {
-                registerStoneCutter(tier);
+            if (CMMTier.shouldRegistry(tier, CMMMAdvancedMachineTypes.MECHANICAL_SAW)) {
+                registerMechanicalSaw(tier);
             }
         });
     }
@@ -131,6 +133,10 @@ public class CMMMRegistryEntry {
             CMMTier.getRegistrate(CreateMoreMoreMachines.MODID)
                 .blockEntity(name, (type, pos, state) -> new CMMCrushingWheelBlockEntity(tier, type, pos, state));
         wheelEntity = wheelEntityBuilder
+            // Flywheel visual, mirroring vanilla CRUSHING_WHEEL: the partial model is resolved
+            // inside the supplier (client FMLClientSetupEvent only) and skipVanillaRender must
+            // stay false so the wheel still renders via the BER when the Flywheel backend is off.
+            .visual(() -> SingleAxisRotatingVisual.of(CMMPartialModelsRegistry.getPartialModels(tier, "crushing_wheel")[0]), false)
             .validBlocks(wheel)
             .renderer(() -> KineticBlockEntityRenderer::new)
             .register();
@@ -150,16 +156,16 @@ public class CMMMRegistryEntry {
         CRUSHING_WHEEL_CONTROLLER_ENTITIES.put(id, controllerEntity);
     }
 
-    private static void registerStoneCutter(CMMTier tier) {
+    private static void registerMechanicalSaw(CMMTier tier) {
         ResourceLocation id = tier.getId();
-        String name = id.getPath() + "_stone_cutter";
+        String name = id.getPath() + "_mechanical_saw";
 
-        BlockEntry<CMMStoneCutterBlock> stoneCutter = CMMTier.getRegistrate(CreateMoreMoreMachines.MODID)
-            .block(name, properties -> new CMMStoneCutterBlock(tier, properties))
+        BlockEntry<CMMMechanicalSawBlock> mechanicalSaw = CMMTier.getRegistrate(CreateMoreMoreMachines.MODID)
+            .block(name, properties -> new CMMMechanicalSawBlock(tier, properties))
             .initialProperties(SharedProperties::stone)
             .properties(properties -> properties.noOcclusion()
                 .mapColor(MapColor.PODZOL))
-            .onRegister(CMMBlockStressValues.setImpact(CMMMAdvancedMachineTypes.stoneCutterImpact(tier)))
+            .onRegister(CMMBlockStressValues.setImpact(CMMMAdvancedMachineTypes.mechanicalSawImpact(tier)))
             .setData(ProviderType.BLOCKSTATE, NonNullBiConsumer.noop())
             .transform(TagGen.axeOrPickaxe())
             .setData(ProviderType.LANG, NonNullBiConsumer.noop())
@@ -169,17 +175,17 @@ public class CMMMRegistryEntry {
             .build()
             .register();
 
-        BlockEntityEntry<CMMStoneCutterBlockEntity> stoneCutterEntity;
-        CreateBlockEntityBuilder<CMMStoneCutterBlockEntity, CreateRegistrate> stoneCutterEntityBuilder =
+        BlockEntityEntry<CMMMechanicalSawBlockEntity> mechanicalSawEntity;
+        CreateBlockEntityBuilder<CMMMechanicalSawBlockEntity, CreateRegistrate> mechanicalSawEntityBuilder =
             CMMTier.getRegistrate(CreateMoreMoreMachines.MODID)
-                .blockEntity(name, (type, pos, state) -> new CMMStoneCutterBlockEntity(tier, type, pos, state));
-        stoneCutterEntity = stoneCutterEntityBuilder
+                .blockEntity(name, (type, pos, state) -> new CMMMechanicalSawBlockEntity(tier, type, pos, state));
+        mechanicalSawEntity = mechanicalSawEntityBuilder
             .visual(() -> SawVisual::new)
-            .validBlocks(stoneCutter)
+            .validBlocks(mechanicalSaw)
             .renderer(() -> SawRenderer::new)
             .register();
 
-        STONE_CUTTERS.put(id, stoneCutter);
-        STONE_CUTTER_ENTITIES.put(id, stoneCutterEntity);
+        MECHANICAL_SAWS.put(id, mechanicalSaw);
+        MECHANICAL_SAW_ENTITIES.put(id, mechanicalSawEntity);
     }
 }
