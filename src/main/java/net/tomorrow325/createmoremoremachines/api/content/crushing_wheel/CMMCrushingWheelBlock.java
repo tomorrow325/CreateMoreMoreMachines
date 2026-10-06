@@ -172,8 +172,10 @@ public class CMMCrushingWheelBlock extends CrushingWheelBlock implements IHaveTi
         // Not CMMTierTooltip.PROCESSING_MULTIPLE: that renders the raw CMM tier multiple and
         // never sees this addon's per-machine config override. The number below goes through
         // the same CMMMConfig resolver as the controller's slot-0 batch, so the tooltip shows
-        // the parallel count that is actually in effect.
+        // the parallel multiple that is actually in effect - the wheel's actual batch is that
+        // multiple x the item's max stack size, which the static hint line below states.
         tooltips.add(Component.translatable(CMMMConfig.TOOLTIP_PROCESSING_MULTIPLE,
             CMMMConfig.clampProcessingMultiple(CMMMConfig.crushingWheelProcessingMultiple(tier))));
+        tooltips.add(Component.translatable(CMMMConfig.TOOLTIP_CRUSHING_BATCH_HINT));
     }
 }

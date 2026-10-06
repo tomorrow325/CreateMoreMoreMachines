@@ -9,5 +9,6 @@
 	"config.createmoremoremachines.crushing_wheel_speed_multiple": "Crushing Wheel Speed Multiple",
 	"config.createmoremoremachines.mechanical_saw_processing_multiple": "Mechanical Saw Parallel Processing Multiple",
 	"config.createmoremoremachines.mechanical_saw_speed_multiple": "Mechanical Saw Speed Multiple",
-	"tooltip.createmoremoremachines.processing_multiple": "§aProcessing Multiple:§f %d"
+	"tooltip.createmoremoremachines.processing_multiple": "§aProcessing Multiple:§f %d",
+	"tooltip.createmoremoremachines.crushing_wheel_batch_hint": "§7Actual batch per cycle: §fparallel multiple × item max stack size"
 }

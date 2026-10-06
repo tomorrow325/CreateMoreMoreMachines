@@ -9,5 +9,6 @@
 	"config.createmoremoremachines.crushing_wheel_speed_multiple": "粉碎轮速度倍率",
 	"config.createmoremoremachines.mechanical_saw_processing_multiple": "动力锯处理并行数",
 	"config.createmoremoremachines.mechanical_saw_speed_multiple": "动力锯速度倍率",
-	"tooltip.createmoremoremachines.processing_multiple": "§a并行:§f %d"
+	"tooltip.createmoremoremachines.processing_multiple": "§a并行:§f %d",
+	"tooltip.createmoremoremachines.crushing_wheel_batch_hint": "§7实际批量: §f并行数 × 物品最大堆叠"
 }

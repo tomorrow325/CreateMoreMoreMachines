@@ -15,10 +15,11 @@ import net.yxiao233.createmoremachines.api.registry.CMMTier;
  * <p>The four resolvers below are the single read path for the machine code. Resolution rule:
  * a configured value below 0 (an explicit {@code -1}, or any unexpected negative) means "follow
  * the tier's CMM processing multiple"; anything else is returned as configured. No clamping
- * happens here on purpose - the use sites
- * keep their existing guards (the 64 batch cap, the cycle-duration floors, the vanilla-speed
- * early-outs and the {@code max(..., 1)} protections), so an explicit value behaves exactly
- * like the same CMM multiple would.
+ * happens here on purpose - the use sites keep their existing guards (the wheel's 64 parallel
+ * multiple cap - the actual batch is the capped multiple &times; the item's max stack size - and
+ * the saw's 64 batch cap, the cycle-duration floors, the vanilla-speed early-outs and the
+ * {@code max(..., 1)} protections), so an explicit value behaves exactly like the same CMM
+ * multiple would.
  */
 public class CMMMConfig {
     private static final ModConfigSpec.Builder BUILDER;
@@ -91,8 +92,10 @@ public class CMMMConfig {
     }
 
     /**
-     * Runtime and tooltip cap of the parallel batch, matching CMM's own deployer clamp
-     * ({@code CMMBeltDeployerCallbacks} uses {@code Math.min(multiple, 64)}).
+     * Runtime and tooltip cap of the parallel multiple, matching CMM's own deployer clamp
+     * ({@code CMMBeltDeployerCallbacks} uses {@code Math.min(multiple, 64)}). The crushing
+     * wheel's actual batch is this capped multiple &times; the item's max stack size, while the
+     * mechanical saw clamps its batch directly with the capped multiple.
      */
     public static final int MAX_PROCESSING_MULTIPLE = 64;
 
@@ -106,16 +109,26 @@ public class CMMMConfig {
     /**
      * Effective parallel count shown in the machine tooltips: the resolved multiple floored at
      * 1 (0/1 mean "parallel disabled", never "zero") and capped at {@link #MAX_PROCESSING_MULTIPLE}
-     * - the exact clamp the saw's slot-0 capacity applies at runtime. The tooltip must go through
-     * the same resolvers as the machines: {@code CMMTierTooltip.Type.PROCESSING_MULTIPLE} renders
-     * {@code tier.getProcessingMultiple()} only and never sees this addon's per-machine config
-     * override, which is the tooltip/config mismatch this fixes. The wheel's slot-0 capacity
-     * keeps the vanilla whole-stack baseline for multiples &le; 1; the floored display of 1 there
-     * matches the config comment ("0/1 disables the parallel feature").
+     * - for the saw, the exact clamp its slot-0 capacity applies at runtime; for the wheel, the
+     * clamp of its parallel multiple, whose actual batch is the capped multiple &times; the
+     * item's max stack size (multiples &le; 1 keep the wheel's vanilla whole-stack baseline).
+     * The tooltip must go through the same resolvers as the machines:
+     * {@code CMMTierTooltip.Type.PROCESSING_MULTIPLE} renders {@code tier.getProcessingMultiple()}
+     * only and never sees this addon's per-machine config override, which is the tooltip/config
+     * mismatch this fixes. The floored display of 1 matches the config comment ("0/1 disables
+     * the parallel feature").
      */
     public static int clampProcessingMultiple(int resolvedMultiple) {
         return Math.min(Math.max(resolvedMultiple, 1), MAX_PROCESSING_MULTIPLE);
     }
+
+    /**
+     * Translation key of the crushing wheel's static batch formula tooltip line. Deliberately a
+     * wheel-specific key instead of the parameterised {@link #TOOLTIP_PROCESSING_MULTIPLE}:
+     * the wheel's actual batch is the shown multiple &times; the item's max stack size, a
+     * formula rather than a number, so the shipped strings state it without arguments.
+     */
+    public static final String TOOLTIP_CRUSHING_BATCH_HINT = "tooltip.createmoremoremachines.crushing_wheel_batch_hint";
 
     public static int crushingWheelProcessingMultiple(CMMTier tier) {
         CMMMTierConfig config = forTier(tier);

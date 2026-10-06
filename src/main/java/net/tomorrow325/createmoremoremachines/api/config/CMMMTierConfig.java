@@ -49,12 +49,13 @@ public class CMMMTierConfig {
     public void registry(ModConfigSpec.Builder BUILDER){
         BUILDER.translation(key(tier + "_tier")).push(upperCaseForFirstChar(tier) + "Tier");
 
-        // Parallel entry: [-1, 64]. -1 follows CMM; >= 2 is an explicit batch size whose runtime
-        // clamp of 64 matches CMM's own deployer clamp (TierConfigBase [1,64] +
+        // Parallel entry: [-1, 64]. -1 follows CMM; >= 2 is an explicit parallel multiple - the
+        // wheel's actual batch is the capped multiple x the item's max stack size - whose
+        // runtime clamp of 64 matches CMM's own deployer clamp (TierConfigBase [1,64] +
         // CMMBeltDeployerCallbacks Math.min(multiple, 64)); 0/1 disables the parallel feature.
         CRUSHING_WHEEL_PROCESSING_MULTIPLE = BUILDER
                 .translation(key("crushing_wheel_processing_multiple"))
-                .comment("Parallel processing batch size for " + tier + " tier crushing wheel[default:" + crushingWheelProcessingMultiple + "] (-1 follows the " + tier + " tier processing multiple of CreateMoreMachines, values above 1 are capped at 64)")
+                .comment("Parallel processing multiple for " + tier + " tier crushing wheel, the actual batch is the capped multiple x the item max stack size[default:" + crushingWheelProcessingMultiple + "] (-1 follows the " + tier + " tier processing multiple of CreateMoreMachines, values above 1 are capped at 64)")
                 .defineInRange(tier + "_crushing_wheel_processing_multiple",crushingWheelProcessingMultiple,-1,64);
 
         // Speed entry: [-1, Integer.MAX_VALUE]. -1 follows CMM; >= 2 divides the crushing
