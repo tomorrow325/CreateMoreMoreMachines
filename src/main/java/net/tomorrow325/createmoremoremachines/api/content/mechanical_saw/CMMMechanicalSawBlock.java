@@ -50,8 +50,9 @@ public class CMMMechanicalSawBlock extends SawBlock implements IHaveTierInformat
     public void addTierInformation(List<Component> tooltips) {
         // Not CMMTierTooltip.PROCESSING_MULTIPLE: that renders the raw CMM tier multiple and
         // never sees this addon's per-machine config override. The number below goes through
-        // the same CMMMConfig resolver as the TieredSawInventory slot-0 capacity, so the
-        // tooltip shows the parallel count that is actually in effect.
+        // the same CMMMConfig resolver as the TieredSawInventory slot-0 capacity and the
+        // block-breaking speed, so the tooltip shows the parallel count that is actually in
+        // effect everywhere.
         tooltips.add(Component.translatable(CMMMConfig.TOOLTIP_PROCESSING_MULTIPLE,
             CMMMConfig.clampProcessingMultiple(CMMMConfig.mechanicalSawProcessingMultiple(tier))));
     }

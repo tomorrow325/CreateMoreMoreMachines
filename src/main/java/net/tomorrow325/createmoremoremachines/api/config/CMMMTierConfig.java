@@ -67,10 +67,11 @@ public class CMMMTierConfig {
 
         // Parallel entry: [-1, 64]. -1 follows CMM; >= 2 is an explicit batch size whose runtime
         // clamp of 64 matches CMM's own deployer clamp; 0/1 collapses to the vanilla saw
-        // baseline of one item per slot 0 through the use-site Math.max(..., 1).
+        // baseline of one item per slot 0 through the use-site Math.max(..., 1). The same
+        // clamped count also boosts the sideways saw's block-breaking speed by (1 + count / 10).
         MECHANICAL_SAW_PROCESSING_MULTIPLE = BUILDER
                 .translation(key("mechanical_saw_processing_multiple"))
-                .comment("Parallel processing batch size for " + tier + " tier mechanical saw[default:" + mechanicalSawProcessingMultiple + "] (-1 follows the " + tier + " tier processing multiple of CreateMoreMachines, values above 1 are capped at 64)")
+                .comment("Parallel processing batch size for " + tier + " tier mechanical saw, the sideways block-breaking speed is multiplied by (1 + it / 10)[default:" + mechanicalSawProcessingMultiple + "] (-1 follows the " + tier + " tier processing multiple of CreateMoreMachines, values above 1 are capped at 64)")
                 .defineInRange(tier + "_mechanical_saw_processing_multiple",mechanicalSawProcessingMultiple,-1,64);
 
         // Speed entry: [-1, Integer.MAX_VALUE]. -1 follows CMM; >= 2 divides the cutting

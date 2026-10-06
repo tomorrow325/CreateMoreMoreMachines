@@ -13,7 +13,7 @@ import net.yxiao233.createmoremachines.api.registry.CMMTier;
 /**
  * Tiered mechanical saw block entity.
  *
- * <p>Two tier behaviours are layered on top of the untouched Create saw mechanism (recipe
+ * <p>Three tier behaviours are layered on top of the untouched Create saw mechanism (recipe
  * lookup, filter, belt/funnel/entity item handling, tree felling are all inherited):
  * <ul>
  * <li><b>Speed</b> - {@link SawBlockEntity#start(ItemStack)} is public and writes
@@ -29,6 +29,14 @@ import net.yxiao233.createmoremachines.api.registry.CMMTier;
  * {@code min(processingMultiple, MAX_BATCH)} items in slot 0 (further limited by the item's own
  * max stack size through {@code ItemStackHandler#getStackLimit}), so one cycle processes a
  * tier-sized batch of the same item and yields the same multiplied results.</li>
+ * <li><b>Block breaking</b> - the sideways saw's destruction speed is
+ * {@link com.simibubi.create.content.kinetics.base.BlockBreakingKineticBlockEntity#getBreakSpeed()
+ * getBreakSpeed()}, protected and only consulted by the server-side breaker loop, so it is
+ * multiplied by {@code 1 + parallelCount / 10} (real-valued) on the same clamped parallel count
+ * the batch and the tooltip use. Create's own per-tick clamps ({@code (int) (breakSpeed /
+ * blockHardness)} capped by {@code 10 - destroyProgress}, and {@code (int) (blockHardness /
+ * breakSpeed)} ticks between hits) stay in charge, so the multiplication only ever speeds the
+ * break up.</li>
  * </ul>
  *
  * <p>Both multiples (the speed division in the first bullet and the batch size in the second)
@@ -118,6 +126,23 @@ public class CMMMechanicalSawBlockEntity extends SawBlockEntity {
         // a few ticks later.
         inventory.recipeDuration = Math.max(MIN_CYCLE_DURATION, inventory.remainingTime / multiple);
         inventory.remainingTime = inventory.recipeDuration;
+    }
+
+    /**
+     * Speed of the sideways saw's block breaking, i.e. the destruction speed. Only the server
+     * side breaker loop of {@code BlockBreakingKineticBlockEntity#tick} reads this, so no other
+     * saw behaviour is touched. The vanilla speed ({@code |getSpeed()| / 100}) is multiplied by
+     * {@code 1 + parallelCount / 10}, where the parallel count is the same clamped value the
+     * tooltip and the slot-0 batch go through - e.g. 1.4x at the brass default of 4 and 7.4x at
+     * the 64 cap, the division being real-valued ({@code / 10.0F}) so small counts still scale.
+     * Create's own per-tick clamps stay in charge of the progress accounting, so the
+     * multiplication only ever speeds the break up and never skips the {@code onBlockBroken}
+     * drop handling or the tree felling.
+     */
+    @Override
+    protected float getBreakSpeed() {
+        float parallelCount = CMMMConfig.clampProcessingMultiple(CMMMConfig.mechanicalSawProcessingMultiple(tier));
+        return super.getBreakSpeed() * (1.0F + parallelCount / 10.0F);
     }
 
     /**
