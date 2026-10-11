@@ -36,6 +36,13 @@ public class CMMMJEIPlugin implements IModPlugin {
         RecipeType<?> cutting = RecipeType.createRecipeHolderType(Create.asResource("cutting"));
         RecipeType<?> stonecutting =
             RecipeType.createRecipeHolderType(ResourceLocation.fromNamespaceAndPath("minecraft", "stonecutting"));
+        // The fan's four JEI categories use the fan_* uids of Create's own JEI plugin, not the
+        // fan processing type registration names (blasting/smoking/splashing/haunting) - the
+        // catalysts must match the category ids.
+        RecipeType<?> fanWashing = RecipeType.createRecipeHolderType(Create.asResource("fan_washing"));
+        RecipeType<?> fanSmoking = RecipeType.createRecipeHolderType(Create.asResource("fan_smoking"));
+        RecipeType<?> fanBlasting = RecipeType.createRecipeHolderType(Create.asResource("fan_blasting"));
+        RecipeType<?> fanHaunting = RecipeType.createRecipeHolderType(Create.asResource("fan_haunting"));
 
         CMMTier.getTiers()
             .forEach((id, tier) -> {
@@ -52,6 +59,14 @@ public class CMMMJEIPlugin implements IModPlugin {
                     // Create's saw natively supports cutting plus (config-gated, default on) vanilla stonecutting.
                     registration.addRecipeCatalyst(mechanicalSaw, cutting);
                     registration.addRecipeCatalyst(mechanicalSaw, stonecutting);
+                }
+                BlockEntry<?> encasedFan = CMMMRegistryEntry.getEncasedFans()
+                    .get(id);
+                if (encasedFan != null) {
+                    registration.addRecipeCatalyst(encasedFan, fanWashing);
+                    registration.addRecipeCatalyst(encasedFan, fanSmoking);
+                    registration.addRecipeCatalyst(encasedFan, fanBlasting);
+                    registration.addRecipeCatalyst(encasedFan, fanHaunting);
                 }
             });
     }

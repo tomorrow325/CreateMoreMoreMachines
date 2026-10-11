@@ -6,6 +6,8 @@ import java.util.Map;
 
 import com.simibubi.create.content.kinetics.base.KineticBlockEntityRenderer;
 import com.simibubi.create.content.kinetics.base.SingleAxisRotatingVisual;
+import com.simibubi.create.content.kinetics.fan.EncasedFanRenderer;
+import com.simibubi.create.content.kinetics.fan.FanVisual;
 import com.simibubi.create.content.kinetics.saw.SawRenderer;
 import com.simibubi.create.content.kinetics.saw.SawVisual;
 import com.simibubi.create.content.processing.AssemblyOperatorBlockItem;
@@ -28,6 +30,8 @@ import net.tomorrow325.createmoremoremachines.api.content.crushing_wheel.CMMCrus
 import net.tomorrow325.createmoremoremachines.api.content.crushing_wheel.CMMCrushingWheelBlockEntity;
 import net.tomorrow325.createmoremoremachines.api.content.crushing_wheel.CMMCrushingWheelControllerBlock;
 import net.tomorrow325.createmoremoremachines.api.content.crushing_wheel.CMMCrushingWheelControllerBlockEntity;
+import net.tomorrow325.createmoremoremachines.api.content.encased_fan.CMMEncasedFanBlock;
+import net.tomorrow325.createmoremoremachines.api.content.encased_fan.CMMEncasedFanBlockEntity;
 import net.tomorrow325.createmoremoremachines.api.content.mechanical_saw.CMMMechanicalSawBlock;
 import net.tomorrow325.createmoremoremachines.api.content.mechanical_saw.CMMMechanicalSawBlockEntity;
 import net.yxiao233.createmoremachines.api.registry.CMMBlockStressValues;
@@ -36,9 +40,9 @@ import net.yxiao233.createmoremachines.api.registry.CMMTier;
 
 /**
  * All registration ids of this addon live in the {@code createmoremoremachines} namespace:
- * {@code {tier}_crushing_wheel}, {@code {tier}_crushing_wheel_controller} and
- * {@code {tier}_mechanical_saw}; block entities share the name of their block, mirroring the
- * Create More Machines convention.
+ * {@code {tier}_crushing_wheel}, {@code {tier}_crushing_wheel_controller},
+ * {@code {tier}_mechanical_saw} and {@code {tier}_encased_fan}; block entities share the name
+ * of their block, mirroring the Create More Machines convention.
  *
  * <p>All asset providers (blockstate, item model, lang) are no-ops because every asset is
  * hand-written in {@code src/main/resources}; the controller additionally no-ops its loot
@@ -53,6 +57,9 @@ public class CMMMRegistryEntry {
     // Mechanical Saw
     private static final Map<ResourceLocation, BlockEntry<CMMMechanicalSawBlock>> MECHANICAL_SAWS = new HashMap<>();
     private static final Map<ResourceLocation, BlockEntityEntry<CMMMechanicalSawBlockEntity>> MECHANICAL_SAW_ENTITIES = new HashMap<>();
+    // Encased Fan
+    private static final Map<ResourceLocation, BlockEntry<CMMEncasedFanBlock>> ENCASED_FANS = new HashMap<>();
+    private static final Map<ResourceLocation, BlockEntityEntry<CMMEncasedFanBlockEntity>> ENCASED_FAN_ENTITIES = new HashMap<>();
 
     public static Map<ResourceLocation, BlockEntry<CMMCrushingWheelBlock>> getCrushingWheels() {
         return Collections.unmodifiableMap(CRUSHING_WHEELS);
@@ -78,6 +85,14 @@ public class CMMMRegistryEntry {
         return Collections.unmodifiableMap(MECHANICAL_SAW_ENTITIES);
     }
 
+    public static Map<ResourceLocation, BlockEntry<CMMEncasedFanBlock>> getEncasedFans() {
+        return Collections.unmodifiableMap(ENCASED_FANS);
+    }
+
+    public static Map<ResourceLocation, BlockEntityEntry<CMMEncasedFanBlockEntity>> getEncasedFanEntities() {
+        return Collections.unmodifiableMap(ENCASED_FAN_ENTITIES);
+    }
+
     /**
      * Called from {@link net.yxiao233.createmoremachines.common.registry.CMMRegistryEntry}
      * {@code register()} (via {@code ICMMPlugin#onRegister}), at which point this addon's
@@ -90,6 +105,9 @@ public class CMMMRegistryEntry {
             }
             if (CMMTier.shouldRegistry(tier, CMMMAdvancedMachineTypes.MECHANICAL_SAW)) {
                 registerMechanicalSaw(tier);
+            }
+            if (CMMTier.shouldRegistry(tier, CMMMAdvancedMachineTypes.ENCASED_FAN)) {
+                registerEncasedFan(tier);
             }
         });
     }
@@ -187,5 +205,43 @@ public class CMMMRegistryEntry {
 
         MECHANICAL_SAWS.put(id, mechanicalSaw);
         MECHANICAL_SAW_ENTITIES.put(id, mechanicalSawEntity);
+    }
+
+    private static void registerEncasedFan(CMMTier tier) {
+        ResourceLocation id = tier.getId();
+        String name = id.getPath() + "_encased_fan";
+
+        BlockEntry<CMMEncasedFanBlock> encasedFan = CMMTier.getRegistrate(CreateMoreMoreMachines.MODID)
+            .block(name, properties -> new CMMEncasedFanBlock(tier, properties))
+            .initialProperties(SharedProperties::stone)
+            .properties(properties -> properties.mapColor(MapColor.PODZOL))
+            .onRegister(CMMBlockStressValues.setImpact(CMMMAdvancedMachineTypes.encasedFanImpact(tier)))
+            // The vanilla ENCASED_FAN registration chain carries the same layer; the fan's own
+            // textures use partial alpha that cutoutMipped thresholds, exactly like vanilla.
+            .addLayer(() -> () -> RenderType.cutoutMipped())
+            .setData(ProviderType.BLOCKSTATE, NonNullBiConsumer.noop())
+            .transform(TagGen.axeOrPickaxe())
+            .setData(ProviderType.LANG, NonNullBiConsumer.noop())
+            .item(AssemblyOperatorBlockItem::new)
+            .setData(ProviderType.LANG, NonNullBiConsumer.noop())
+            .model(NonNullBiConsumer.noop())
+            .build()
+            .register();
+
+        BlockEntityEntry<CMMEncasedFanBlockEntity> encasedFanEntity;
+        CreateBlockEntityBuilder<CMMEncasedFanBlockEntity, CreateRegistrate> encasedFanEntityBuilder =
+            CMMTier.getRegistrate(CreateMoreMoreMachines.MODID)
+                .blockEntity(name, (type, pos, state) -> new CMMEncasedFanBlockEntity(tier, type, pos, state));
+        encasedFanEntity = encasedFanEntityBuilder
+            // Flywheel visual, mirroring vanilla ENCASED_FAN: skipVanillaRender must stay false
+            // so the fan still renders via the BER when the Flywheel backend is off (same
+            // reasoning as the crushing wheel's visual registration).
+            .visual(() -> FanVisual::new, false)
+            .validBlocks(encasedFan)
+            .renderer(() -> EncasedFanRenderer::new)
+            .register();
+
+        ENCASED_FANS.put(id, encasedFan);
+        ENCASED_FAN_ENTITIES.put(id, encasedFanEntity);
     }
 }

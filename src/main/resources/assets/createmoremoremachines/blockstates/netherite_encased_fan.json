@@ -1,0 +1,30 @@
+{
+	"variants": {
+		"facing=down": {
+			"model": "createmoremoremachines:block/encased_fan/netherite_encased_fan",
+			"x": 180
+		},
+		"facing=east": {
+			"model": "createmoremoremachines:block/encased_fan/netherite_encased_fan",
+			"x": 90,
+			"y": 90
+		},
+		"facing=north": {
+			"model": "createmoremoremachines:block/encased_fan/netherite_encased_fan",
+			"x": 90
+		},
+		"facing=south": {
+			"model": "createmoremoremachines:block/encased_fan/netherite_encased_fan",
+			"x": 90,
+			"y": 180
+		},
+		"facing=up": {
+			"model": "createmoremoremachines:block/encased_fan/netherite_encased_fan"
+		},
+		"facing=west": {
+			"model": "createmoremoremachines:block/encased_fan/netherite_encased_fan",
+			"x": 90,
+			"y": 270
+		}
+	}
+}

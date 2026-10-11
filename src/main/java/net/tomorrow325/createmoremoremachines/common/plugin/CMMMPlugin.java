@@ -47,6 +47,7 @@ public class CMMMPlugin implements ICMMPlugin {
         // Force the machine type singletons to exist before the shouldRegistry gate reads them.
         CMMMAdvancedMachineTypes.CRUSHING_WHEEL.getName();
         CMMMAdvancedMachineTypes.MECHANICAL_SAW.getName();
+        CMMMAdvancedMachineTypes.ENCASED_FAN.getName();
         CMMMRegistryEntry.registerAll();
     }
 

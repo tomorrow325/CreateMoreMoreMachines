@@ -35,3 +35,6 @@ nul
 
 # datagen hash cache
 src/generated/resources/.cache/
+
+# session temp dirs
+.tmp*/

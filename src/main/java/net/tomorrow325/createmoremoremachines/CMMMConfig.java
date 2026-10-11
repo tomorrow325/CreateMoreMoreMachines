@@ -29,23 +29,28 @@ public class CMMMConfig {
     // tier processing multiple. An explicit -1 in the config file opts back into that multiple.
     public static final CMMMTierConfig BRASS = CMMMTierConfig.create("brass",
             4,4,
-            4,4
+            4,4,
+            4
     );
     public static final CMMMTierConfig NETHERITE = CMMMTierConfig.create("netherite",
             8,8,
-            8,8
+            8,8,
+            8
     );
     public static final CMMMTierConfig END = CMMMTierConfig.create("end",
             16,16,
-            16,16
+            16,16,
+            16
     );
     public static final CMMMTierConfig BEYOND = CMMMTierConfig.create("beyond",
             32,32,
-            32,32
+            32,32,
+            32
     );
     public static final CMMMTierConfig CREATIVE = CMMMTierConfig.create("creative",
             64,64,
-            64,64
+            64,64,
+            64
     );
     protected static final ModConfigSpec SPEC;
     static {
@@ -130,6 +135,14 @@ public class CMMMConfig {
      */
     public static final String TOOLTIP_CRUSHING_BATCH_HINT = "tooltip.createmoremoremachines.crushing_wheel_batch_hint";
 
+    /**
+     * Translation key of the encased fan's speed tooltip line. Deliberately an own key instead of
+     * reusing {@link #TOOLTIP_PROCESSING_MULTIPLE}: that key's shipped wording is a parallel count
+     * ("Processing Multiple"), while the fan has no parallel concept - its config entry only
+     * shortens the processing duration, like the wheel's and saw's speed entries.
+     */
+    public static final String TOOLTIP_FAN_SPEED_MULTIPLE = "tooltip.createmoremoremachines.fan_speed_multiple";
+
     public static int crushingWheelProcessingMultiple(CMMTier tier) {
         CMMMTierConfig config = forTier(tier);
         if (config == null)
@@ -159,6 +172,14 @@ public class CMMMConfig {
         if (config == null)
             return tier.getProcessingMultiple();
         int value = config.getMechanicalSawSpeedMultiple();
+        return value < 0 ? tier.getProcessingMultiple() : value;
+    }
+
+    public static int encasedFanSpeedMultiple(CMMTier tier) {
+        CMMMTierConfig config = forTier(tier);
+        if (config == null)
+            return tier.getProcessingMultiple();
+        int value = config.getEncasedFanSpeedMultiple();
         return value < 0 ? tier.getProcessingMultiple() : value;
     }
 }

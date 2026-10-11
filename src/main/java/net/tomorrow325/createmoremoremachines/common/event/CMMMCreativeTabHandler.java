@@ -30,6 +30,10 @@ public class CMMMCreativeTabHandler {
                     .get(id);
                 if (mechanicalSaw != null)
                     event.accept(mechanicalSaw);
+                var encasedFan = CMMMRegistryEntry.getEncasedFans()
+                    .get(id);
+                if (encasedFan != null)
+                    event.accept(encasedFan);
             });
     }
 }

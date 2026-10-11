@@ -5,7 +5,7 @@ import net.neoforged.neoforge.common.ModConfigSpec;
 import net.tomorrow325.createmoremoremachines.CreateMoreMoreMachines;
 
 /**
- * Per-tier config entries for the two machines added by this addon, mirroring CMM's
+ * Per-tier config entries for the three machines added by this addon, mirroring CMM's
  * {@code TierConfigBase} pattern (define the entries in {@link #registry}, snapshot them once
  * on {@link ModConfigEvent.Loading} in {@link #onLoad}, and let the getters read only the
  * snapshot). Like CMM, this addon listens to no {@code ModConfigEvent.Reloading}, so config
@@ -24,26 +24,30 @@ public class CMMMTierConfig {
     private ModConfigSpec.IntValue CRUSHING_WHEEL_SPEED_MULTIPLE;
     private ModConfigSpec.IntValue MECHANICAL_SAW_PROCESSING_MULTIPLE;
     private ModConfigSpec.IntValue MECHANICAL_SAW_SPEED_MULTIPLE;
+    private ModConfigSpec.IntValue ENCASED_FAN_SPEED_MULTIPLE;
     private int tieredCrushingWheelProcessingMultiple = -1;
     private int tieredCrushingWheelSpeedMultiple = -1;
     private int tieredMechanicalSawProcessingMultiple = -1;
     private int tieredMechanicalSawSpeedMultiple = -1;
+    private int tieredEncasedFanSpeedMultiple = -1;
     private final String tier;
     private final int crushingWheelProcessingMultiple;
     private final int crushingWheelSpeedMultiple;
     private final int mechanicalSawProcessingMultiple;
     private final int mechanicalSawSpeedMultiple;
+    private final int encasedFanSpeedMultiple;
 
-    private CMMMTierConfig(String tier, int crushingWheelProcessingMultiple, int crushingWheelSpeedMultiple, int mechanicalSawProcessingMultiple, int mechanicalSawSpeedMultiple){
+    private CMMMTierConfig(String tier, int crushingWheelProcessingMultiple, int crushingWheelSpeedMultiple, int mechanicalSawProcessingMultiple, int mechanicalSawSpeedMultiple, int encasedFanSpeedMultiple){
         this.tier = tier;
         this.crushingWheelProcessingMultiple = crushingWheelProcessingMultiple;
         this.crushingWheelSpeedMultiple = crushingWheelSpeedMultiple;
         this.mechanicalSawProcessingMultiple = mechanicalSawProcessingMultiple;
         this.mechanicalSawSpeedMultiple = mechanicalSawSpeedMultiple;
+        this.encasedFanSpeedMultiple = encasedFanSpeedMultiple;
     }
 
-    public static CMMMTierConfig create(String tier, int crushingWheelProcessingMultiple, int crushingWheelSpeedMultiple, int mechanicalSawProcessingMultiple, int mechanicalSawSpeedMultiple){
-        return new CMMMTierConfig(tier, crushingWheelProcessingMultiple, crushingWheelSpeedMultiple, mechanicalSawProcessingMultiple, mechanicalSawSpeedMultiple);
+    public static CMMMTierConfig create(String tier, int crushingWheelProcessingMultiple, int crushingWheelSpeedMultiple, int mechanicalSawProcessingMultiple, int mechanicalSawSpeedMultiple, int encasedFanSpeedMultiple){
+        return new CMMMTierConfig(tier, crushingWheelProcessingMultiple, crushingWheelSpeedMultiple, mechanicalSawProcessingMultiple, mechanicalSawSpeedMultiple, encasedFanSpeedMultiple);
     }
 
     public void registry(ModConfigSpec.Builder BUILDER){
@@ -81,6 +85,14 @@ public class CMMMTierConfig {
                 .comment("Speed multiple for " + tier + " tier mechanical saw, the cutting duration is divided by it[default:" + mechanicalSawSpeedMultiple + "] (-1 follows the " + tier + " tier processing multiple of CreateMoreMachines, values below 2 keep the vanilla speed)")
                 .defineInRange(tier + "_mechanical_saw_speed_multiple",mechanicalSawSpeedMultiple,-1,Integer.MAX_VALUE);
 
+        // Speed entry: [-1, Integer.MAX_VALUE]. -1 follows CMM; >= 2 shortens the fan processing
+        // countdown (both the belt and the loose item path, by pre-deducting the multiple at the
+        // use site); 0/1 keeps the vanilla speed.
+        ENCASED_FAN_SPEED_MULTIPLE = BUILDER
+                .translation(key("encased_fan_speed_multiple"))
+                .comment("Speed multiple for " + tier + " tier encased fan, the processing duration is divided by it[default:" + encasedFanSpeedMultiple + "] (-1 follows the " + tier + " tier processing multiple of CreateMoreMachines, values below 2 keep the vanilla speed)")
+                .defineInRange(tier + "_encased_fan_speed_multiple",encasedFanSpeedMultiple,-1,Integer.MAX_VALUE);
+
         BUILDER.pop();
     }
 
@@ -90,6 +102,7 @@ public class CMMMTierConfig {
         this.tieredCrushingWheelSpeedMultiple = CRUSHING_WHEEL_SPEED_MULTIPLE.get();
         this.tieredMechanicalSawProcessingMultiple = MECHANICAL_SAW_PROCESSING_MULTIPLE.get();
         this.tieredMechanicalSawSpeedMultiple = MECHANICAL_SAW_SPEED_MULTIPLE.get();
+        this.tieredEncasedFanSpeedMultiple = ENCASED_FAN_SPEED_MULTIPLE.get();
     }
 
     public int getCrushingWheelProcessingMultiple(){
@@ -106,6 +119,10 @@ public class CMMMTierConfig {
 
     public int getMechanicalSawSpeedMultiple(){
         return tieredMechanicalSawSpeedMultiple;
+    }
+
+    public int getEncasedFanSpeedMultiple(){
+        return tieredEncasedFanSpeedMultiple;
     }
 
     /**

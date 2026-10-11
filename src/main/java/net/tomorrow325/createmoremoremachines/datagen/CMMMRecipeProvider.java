@@ -64,6 +64,17 @@ public class CMMMRecipeProvider extends RecipeProvider {
             .save(recipeOutput);
         upgradeRecipe(CMMMRegistryEntry.getMechanicalSaws(), null, CMMRegistryEntry.BEYOND_ALLOY_SHEET, "end", "beyond")
             .save(recipeOutput);
+
+        // Encased Fan: vanilla fan -> brass -> netherite -> end -> beyond
+        upgradeRecipe(CMMMRegistryEntry.getEncasedFans(), AllBlocks.ENCASED_FAN, AllItems.BRASS_SHEET, null, "brass")
+            .save(recipeOutput);
+        upgradeRecipe(CMMMRegistryEntry.getEncasedFans(), null, CMMRegistryEntry.NETHERITE_ALLOY_SHEET, "brass",
+            "netherite")
+            .save(recipeOutput);
+        upgradeRecipe(CMMMRegistryEntry.getEncasedFans(), null, CMMRegistryEntry.END_ALLOY_SHEET, "netherite", "end")
+            .save(recipeOutput);
+        upgradeRecipe(CMMMRegistryEntry.getEncasedFans(), null, CMMRegistryEntry.BEYOND_ALLOY_SHEET, "end", "beyond")
+            .save(recipeOutput);
     }
 
     private <T extends Block> ShapelessRecipeBuilder upgradeRecipe(Map<ResourceLocation, BlockEntry<T>> map,
